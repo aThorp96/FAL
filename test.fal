@@ -1,0 +1,14 @@
+start state stateA {
+    a: stateB;
+    b: stateA;
+}
+
+state stateB {
+    a: stateA;
+    b: stateC;
+}
+
+accept state stateC {
+    a: stateA;
+    b: stateA;
+}
