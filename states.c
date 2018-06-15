@@ -22,7 +22,17 @@ struct _state {
 
 };
 
+/*
+    buildStates take in a file and builds the graph represented in
+    that file. Every file must have one start state and at least one goal state.
+
+    precondition: buildStates assumes the given file has already been opened by 
+        or before the calling function. 
+*/
 State * buildStates(FILE * program) {
+
+    char * currentWord;
+
 
 }
 
