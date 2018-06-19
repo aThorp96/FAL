@@ -4,66 +4,81 @@
 
 
 int inAlphabet(char c) {
-    return (c == 'a' ||
-            c == 'b' ||
-            c == 'c' ||
-            c == 'd' ||
-            c == 'e' ||
-            c == 'f' ||
-            c == 'g' ||
-            c == 'h' ||
-            c == 'i' ||
-            c == 'j' ||
-            c == 'k' ||
-            c == 'l' ||
-            c == 'm' ||
-            c == 'n' ||
-            c == 'o' ||
-            c == 'p' ||
-            c == 'q' ||
-            c == 'r' ||
-            c == 's' ||
-            c == 't' ||
-            c == 'u' ||
-            c == 'v' ||
-            c == 'w' ||
-            c == 'x' ||
-            c == 'y' ||
-            c == 'z' ||
-            // Upper case
-            c == 'A' ||
-            c == 'B' ||
-            c == 'C' ||
-            c == 'D' ||
-            c == 'E' ||
-            c == 'F' ||
-            c == 'G' ||
-            c == 'H' ||
-            c == 'I' ||
-            c == 'J' ||
-            c == 'K' ||
-            c == 'L' ||
-            c == 'M' ||
-            c == 'N' ||
-            c == 'O' ||
-            c == 'P' ||
-            c == 'Q' ||
-            c == 'R' ||
-            c == 'S' ||
-            c == 'T' ||
-            c == 'U' ||
-            c == 'V' ||
-            c == 'W' ||
-            c == 'X' ||
-            c == 'Y' ||
-            c == 'Z'); 
+    switch (c) {
+        case 'a' :
+        case 'b' :
+        case 'c' :
+        case 'd' :
+        case 'e' :
+        case 'f' :
+        case 'g' :
+        case 'h' :
+        case 'i' :
+        case 'j' :
+        case 'k' :
+        case 'l' :
+        case 'm' :
+        case 'n' :
+        case 'o' :
+        case 'p' :
+        case 'q' :
+        case 'r' :
+        case 's' :
+        case 't' :
+        case 'u' :
+        case 'v' :
+        case 'w' :
+        case 'x' :
+        case 'y' :
+        case 'z' :
+        // Upper case
+        case 'A' :
+        case 'B' :
+        case 'C' :
+        case 'D' :
+        case 'E' :
+        case 'F' :
+        case 'G' :
+        case 'H' :
+        case 'I' :
+        case 'J' :
+        case 'K' :
+        case 'L' :
+        case 'M' :
+        case 'N' :
+        case 'O' :
+        case 'P' :
+        case 'Q' :
+        case 'R' :
+        case 'S' :
+        case 'T' :
+        case 'U' :
+        case 'V' :
+        case 'W' :
+        case 'X' :
+        case 'Y' :
+        case 'Z' :
+            return 1;
+        default:
+            return 0;
+    }
+}
+
+int whiteSpace(char c) {
+    switch (c) {
+        case '\n':
+        case '\t':
+        case ' ' :
+            return 1;
+        default:
+            return 0;
+    }
 }
 
 char * getWord(FILE * file) {
     int len = 0;
     char word[50];
     char * rtrn = 0;
-    char * cursor;
     char c;
 
     if ((c = getc(file)) != EOF) {
@@ -72,10 +87,10 @@ char * getWord(FILE * file) {
             c = getc(file);
 
         do {
-            word[len++] = c;
-            if (len < 49) 
-                c = getc(file);
-        } while (inAlphabet(c));
+            if (len < 49) {
+                word[len++] = c;
+            }
+        } while ((c = getc(file)) != EOF && inAlphabet(c));
 
         word[len] = (char) 0;
         rtrn = (char *) calloc(len, sizeof(char));
@@ -84,6 +99,28 @@ char * getWord(FILE * file) {
     return rtrn;
 }
 
+char * getUntilChar(FILE * file, char endChar) {
+    int len = 0;
+    char word[50];
+    char * rtrn = 0;
+    char c;
+
+    while ((c = getc(file) !=  EOF && c != endChar && inAlphabet(c)) {
+        word[len++] = c;
+    }
+    if (c == endChar) {
+        word[len] = (char) 0;
+        rtrn = (char *) calloc(len, sizeof(char));
+        stpcpy(rtrn, word);
+    }
+    return rtrn;
+}
+
+void skipWhiteSpace(FILE * file) {
+    char c;
+    while ((c = getc(file)) != EOF && whiteSpace(c));
+    unget(c, file);
+}
 
 
 
