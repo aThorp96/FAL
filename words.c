@@ -75,22 +75,31 @@ int whiteSpace(char c) {
     }
 }
 
+void skipWhiteSpace(FILE * file) {
+    char c;
+    while ((c = getc(file)) != EOF && whiteSpace(c));
+    ungetc(c, file);
+}
+
 char * getWord(FILE * file) {
     int len = 0;
     char word[50];
     char * rtrn = 0;
     char c;
 
+    skipWhiteSpace(file);
+
     if ((c = getc(file)) != EOF) {
-        //Leading white space
-        while (!inAlphabet(c))
+        //Leading misc characters
+        while (c != EOF && !inAlphabet(c))
             c = getc(file);
 
-        do {
+        while (inAlphabet(c)) {
             if (len < 49) {
                 word[len++] = c;
             }
-        } while ((c = getc(file)) != EOF && inAlphabet(c));
+            c = getc(file);
+        }
 
         word[len] = (char) 0;
         rtrn = (char *) calloc(len, sizeof(char));
@@ -105,7 +114,7 @@ char * getUntilChar(FILE * file, char endChar) {
     char * rtrn = 0;
     char c;
 
-    while ((c = getc(file) !=  EOF && c != endChar && inAlphabet(c)) {
+    while (c = getc(file) !=  EOF && c != endChar && inAlphabet(c)) {
         word[len++] = c;
     }
     if (c == endChar) {
@@ -116,11 +125,7 @@ char * getUntilChar(FILE * file, char endChar) {
     return rtrn;
 }
 
-void skipWhiteSpace(FILE * file) {
-    char c;
-    while ((c = getc(file)) != EOF && whiteSpace(c));
-    unget(c, file);
-}
+
 
 
 
