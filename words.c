@@ -84,7 +84,7 @@ void skipWhiteSpace(FILE * file) {
 char * getWord(FILE * file) {
     int len = 0;
     char word[50];
-    char * rtrn = 0;
+    char * rtrn = (char) 0;
     char c;
 
     skipWhiteSpace(file);
