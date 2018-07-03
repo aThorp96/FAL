@@ -9,11 +9,10 @@
     English alphabet (upper and lower case are distinguished)
 */
 typedef struct _state {
-
     int stateType;
     char name[50];
     struct _state * transitions[52];
-} State;
+} * State;
 
 
 
@@ -44,7 +43,7 @@ State * buildState(FILE * inFile, State stateTable[]) {
     State transitions[62];
     char c;
 
-    while(word = getWord(inFile) > 0) {
+    while((word = getWord(inFile)) > 0) {
         switch (componant) {
             case 0: //State Type
                 word = getWord(inFile);

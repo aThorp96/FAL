@@ -3,18 +3,19 @@
 #include <string.h>
 #include "states.h"
 
-int hash(State * state) {
-    char cursor[] = state->name;
-    int hash = 0;
-    for(int i = 1; *cursor != 0; i++) {
-        int poly = 1;
-        for (int j = i; j >= 0; j--) {
-            poly = ((((int) *cursor) - 100) * 7) * j;
-        }
+#define size 1000
+
+unsigned hash(State state) {
+    char * cursor = &state->name[0];
+    int hash;
+    for (hash = 0; * cursor != '\0'; cursor++) {
+        printf("Hashbuilder- hash = %d: cursor = %c (%d)\n", hash, *cursor, (int) *cursor);
+        hash = * cursor + 31 * hash;
     }
+    return hash % (unsigned) size;
 }
 
-void insert(State * table[], State * state) {
+void insert(State table[], State state) {
 
     int index = hash(state);
     if(table[index] == 0x0){

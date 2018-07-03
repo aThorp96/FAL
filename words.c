@@ -103,7 +103,7 @@ char * getWord(FILE * file) {
 
         word[len] = (char) 0;
         rtrn = (char *) calloc(len, sizeof(char));
-        stpcpy(rtrn, word);
+        strcpy(rtrn, word);
     }
     return rtrn;
 }
@@ -120,7 +120,7 @@ char * getUntilChar(FILE * file, char endChar) {
     if (c == endChar) {
         word[len] = (char) 0;
         rtrn = (char *) calloc(len, sizeof(char));
-        stpcpy(rtrn, word);
+        strcpy(rtrn, word);
     }
     return rtrn;
 }
