@@ -7,9 +7,9 @@ int main() {
     char string0[] = "foo";
     char string1[] = "foo";
     char string2[] = "bar";
+    State transitions[52];
 
-    State state0 = (State) malloc(sizeof(*state0));
-    strcpy(state0->name, string0);
+    State state0 = newState(0, string0, transitions);
     printf("String0: %s, Hash: %d\n", string0, hash(state0));
 
     State state2 = (State) malloc(sizeof(*state2));
@@ -20,5 +20,8 @@ int main() {
     strcpy(state1->name, string1);
     printf("String1: %s, Hash: %d\n", string1, hash(state1));
 
-
+    State * table = newHashTable();
+    insert(table, state0);
+    insert(table, state2);
+    printf("State1: %s\n", find(table, string0)->name);
 }

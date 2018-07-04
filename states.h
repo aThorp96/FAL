@@ -9,6 +9,8 @@ typedef struct _state {
     struct _state * transitions[52];
 } * State;
 
+State newState(int type, char * name, State transitions[52]);
+
 
 /* 
     States have an array of 52 transitions; one for every character in the 

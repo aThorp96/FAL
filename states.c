@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "words.h"
 
@@ -14,6 +15,17 @@ typedef struct _state {
     struct _state * transitions[52];
 } * State;
 
+State newState(int type, char * name, State transitions[52]) {
+    State s = (State) malloc(sizeof(s));
+
+    s->stateType = type;
+    strcpy(s->name,name);
+    for (int i = 0; i < 52; i++) {
+        s->transitions[i] = transitions[i];
+    }
+
+    return s;
+}
 
 
 /*
