@@ -13,7 +13,7 @@ State * newHashTable() {
 unsigned hashValue(char * string) {
     int hash;
     for (hash = 0; * string != '\0'; string++) {
-        printf("Hashbuilder- hash = %d: cursor = %c (%d)\n", hash, *string, (int) *string);
+        //printf("Hashbuilder- hash = %d: cursor = %c (%d)\n", hash, *string, (int) *string);
         hash = * string + 31 * hash;
     }
     return hash % (unsigned) size;
@@ -35,8 +35,16 @@ void insert(State table[], State state) {
     }
 }
 
-State delete(State table[], State state) {
-
+State delete(State table[], char * name) {
+    int index = hashValue(name);
+    if(table[index] != 0x0){
+        State selected = table[index];
+        table[index] = 0;
+        return selected;
+    } else {
+        //State already deleted.
+        return 0x0;
+    }
 }
 
 State find(State table[], char * name) {
@@ -44,6 +52,7 @@ State find(State table[], char * name) {
     if(table[index] != 0x0){
         return table[index];
     } else {
+        printf("Error: State %s not in table\n", name);
         return 0;
     }
 }

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "words.h"
+#include "hashTable.h"
 
 #define asciiOffest 101
  
@@ -10,7 +11,7 @@
     English alphabet (upper and lower case are distinguished)
 */
 typedef struct _state {
-    int stateType;
+    int type;
     char name[50];
     struct _state * transitions[52];
 } * State;
@@ -18,7 +19,7 @@ typedef struct _state {
 State newState(int type, char * name, State transitions[52]) {
     State s = (State) malloc(sizeof(s));
 
-    s->stateType = type;
+    s->type = type;
     strcpy(s->name,name);
     for (int i = 0; i < 52; i++) {
         s->transitions[i] = transitions[i];
@@ -91,11 +92,30 @@ State * buildState(FILE * inFile, State stateTable[]) {
                 }
                 break;
             case 3: //Transition Character
-                //skip
+                c = getc(inFile);
+                componant = 4;
+                break;
             case 4: //Colon
+                if ((char colon = getc(inFile)) == ':') {
+                    componant = 5;
+                } else {
+                    //error
+                }
+                break;
             case 5: //State Name
+                word = getWord(inFile);
+                componant = 6;
+                break;
             case 6: //Semicolon
+                if ((char * semicolon = getc(inFile)) == ';') {
+                    transitions[(int) c - asciiOffest] = find(stateTable, word));
+                } else {
+                    // error
+                }
+                componant = 7;
+                break;
             case 7: //Close  Brace
+                    // if Not close brace componant goes back to 7;
             default:
                 break;
         }

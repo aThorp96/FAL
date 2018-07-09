@@ -7,7 +7,7 @@ State * newHashTable();
 
 void insert(State table[], State state);
 
-State delete(State table[], State * state);
+State delete(State table[], char * state);
 
 State find(State table[], char * name);
 #endif // hashTable_h_INCLUDED

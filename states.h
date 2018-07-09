@@ -4,7 +4,7 @@
 //  Transition is a map of character input to a string statename.
 typedef struct _state {
 
-    int stateType;
+    int type;
     char name[50];
     struct _state * transitions[52];
 } * State;

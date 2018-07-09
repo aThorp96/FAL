@@ -23,5 +23,8 @@ int main() {
     State * table = newHashTable();
     insert(table, state0);
     insert(table, state2);
-    printf("State1: %s\n", find(table, string0)->name);
+    printf("State2 type: %d\n", find(table, string2)->type);
+    printf("State1: %s\n", delete(table, string0)->name);
+
+
 }
