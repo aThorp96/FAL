@@ -9,12 +9,12 @@
 /* 
     States have an array of 52 transitions; one for every character in the 
     English alphabet (upper and lower case are distinguished)
-*/
 typedef struct _state {
     int type;
     char name[50];
     struct _state * transitions[52];
 } * State;
+*/
 
 State newState(int type, char * name, State transitions[52]) {
     State s = (State) malloc(sizeof(s));
@@ -28,6 +28,27 @@ State newState(int type, char * name, State transitions[52]) {
     return s;
 }
 
+void printState(State state) {
+    char * type = "";
+
+    switch (state->type) {
+        case 1:
+            type = "Start";
+            break;
+        case 2:
+            type = "Accept";
+            break;
+        default:
+            break;
+    }
+
+    printf("%sState %s\n", type, state->name);
+    printf("Transitions:\n");
+    for (int i = 0; i < 62; i++){
+        printf("%c\t%s", i + asciiOffest, state->transitions[i]->name);
+    }
+}
+
 
 /*
     buildStates take in a file and builds the graph represented in
@@ -36,7 +57,7 @@ State newState(int type, char * name, State transitions[52]) {
     precondition: buildStates assumes the given file has already been opened by 
         or before the calling function. 
 */
-State * buildState(FILE * inFile, State stateTable[]) {
+State buildState(FILE * inFile, State stateTable[]) {
 
 
     //  Componant is the part of the state definition the parser 
@@ -53,10 +74,10 @@ State * buildState(FILE * inFile, State stateTable[]) {
     char * word;
     int type = 0;
     char * name;
-    State transitions[62];
     char c;
+    State transitions[62];
 
-    while((word = getWord(inFile)) > 0) {
+    while(componant < 8) {
         switch (componant) {
             case 0: //State Type
                 word = getWord(inFile);
@@ -96,7 +117,7 @@ State * buildState(FILE * inFile, State stateTable[]) {
                 componant = 4;
                 break;
             case 4: //Colon
-                if ((char colon = getc(inFile)) == ':') {
+                if (getc(inFile) == ':') {
                     componant = 5;
                 } else {
                     //error
@@ -107,19 +128,29 @@ State * buildState(FILE * inFile, State stateTable[]) {
                 componant = 6;
                 break;
             case 6: //Semicolon
-                if ((char * semicolon = getc(inFile)) == ';') {
-                    transitions[(int) c - asciiOffest] = find(stateTable, word));
+                if (getc(inFile) == ';') {
+                    transitions[(int) c - asciiOffest] = find(stateTable, word);
                 } else {
                     // error
                 }
                 componant = 7;
                 break;
             case 7: //Close  Brace
-                    // if Not close brace componant goes back to 7;
+                skipWhiteSpace(inFile);
+                // if Not close brace componant goes back to 7;
+                if ((c = getc(inFile)) == '}') {
+                    componant = 8;
+                } else {
+                    componant = 6;
+                    ungetc(c, inFile);
+                }
+                break;
             default:
                 break;
         }
     }
-
+    State state = newState(type, name, transitions);
+    printState(state);
+    return state;
 }
 
